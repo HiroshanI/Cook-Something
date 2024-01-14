@@ -1,6 +1,5 @@
 # Imports 
 import pandas as pd
-from tabulate import tabulate
 import string
 import ast
 import re
@@ -9,7 +8,10 @@ import nltk
 nltk.download('wordnet')
 from nltk.stem import WordNetLemmatizer
 
-def parseIngredients(ingredients, translator, lemmatizer, common_words):
+def parseIngredients(ingredients, 
+                     translator=str.maketrans("", "", string.punctuation), 
+                     lemmatizer=WordNetLemmatizer(), 
+                     common_words=list(pd.read_csv('src/common_words.csv'))):
 
     """
     Extract and pre-process the ingredients
@@ -25,7 +27,9 @@ def parseIngredients(ingredients, translator, lemmatizer, common_words):
     ingredient_list = list() # Output variable
     
     # Extract ingredients list from recipes
-    ingredients = ast.literal_eval(ingredients)
+    if not isinstance(ingredients, list):
+        print(ingredients)
+        ingredients = ast.literal_eval(ingredients)
 
     # Lemmatize common words
     common_lemmas = [lemmatizer.lemmatize(word.lower()) \
@@ -54,7 +58,6 @@ def parseIngredients(ingredients, translator, lemmatizer, common_words):
                             else None
     return ingredient_list
 
-
 def parseNames(names):
     
     """
@@ -75,10 +78,9 @@ def parseNames(names):
         else:
             new_names.append(name)
 
-
 def preprocess_recipes(filepath):
 
-    common_words = list(pd.read_csv('common_words.csv'))
+    common_words = list(pd.read_csv('src/common_words.csv'))
     translator = str.maketrans("", "", string.punctuation) 
     lemmatizer = WordNetLemmatizer()
     
@@ -86,7 +88,7 @@ def preprocess_recipes(filepath):
     recipes_df = pd.read_csv(filepath)
 
     # Add parsed ingredients into recipes data
-    recipes_df['ingredients_parsed'] = [parseIngredients(ingredients, 
+    recipes_df['ingredients_'] = [parseIngredients(ingredients, 
                                                          translator, lemmatizer, common_words) 
                                                          for ingredients in recipes_df['ingredients']]
 
@@ -97,7 +99,11 @@ def preprocess_recipes(filepath):
     recipes_preprocessed['recipe_name'] = parseNames(recipes_preprocessed['recipe_name'])
 
     # Create new CSV file 
-    recipes_preprocessed.to_csv("recipes_preprocessed.csv", index=False)
+    recipes_preprocessed.to_csv("input/recipes_preprocessed.csv", index=False)
     print("\nCreated file: input/recipes_preprocessed.csv\n")
 
     return recipes_preprocessed
+
+def get_ingredients_list(ingredients):
+    return list(ingredients)
+
