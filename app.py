@@ -20,6 +20,7 @@ def recommend_recipe():
     ingredients = request.args.get('ingredients')
     print(ingredients)
     recipes = getRecipeRecommendations(5, [ingredients])
+    print(recipes)
     response = {}
     for index, row in recipes.iterrows():
         response[index] = {
@@ -31,4 +32,4 @@ def recommend_recipe():
     return jsonify(response)
 
 if __name__ == "__main__":
-   app.run(host="0.0.0.0", debug=True)
+   app.run(host="0.0.0.0", debug=False)

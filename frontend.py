@@ -33,4 +33,7 @@ ingredients = st.multiselect("Select your ingredients", options=suggestions, key
 # Add a submit button
 if st.button("Submit"):
     # Display the input text
-    response = requests.post(api_endpoint, json={"user_input": user_input})
+    ingredients=' '.join(ingredients)
+    print(ingredients)
+    top_recipes = requests.get("https://coook-something-recipe-recommender.onrender.com/recipe?ingredients="+ingredients)
+    print(top_recipes)  

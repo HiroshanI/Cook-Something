@@ -6,6 +6,7 @@ from preprocess import parseIngredients
 from embedding import getInputIngredientEmbeddings
 
 def getScores(input_ingredients):
+
     input_ingredients_preprocessed = parseIngredients(input_ingredients)
     input_encoded = getInputIngredientEmbeddings(input_ingredients_preprocessed)
     
@@ -13,7 +14,7 @@ def getScores(input_ingredients):
         docs_vec = pickle.load(f)        
 
     cos_sim_scores = map(lambda doc: cosine_similarity(input_encoded, doc)[0][0], docs_vec)
-    
+    print("getting scores") 
     return list(cos_sim_scores)
 
 
@@ -26,12 +27,13 @@ def getRecommendations(N, scores):
 
     top_recipes = recipes.loc[top_recipes_idx, :]
     top_recipes['scores'] = top_recipes_scores
-
+    
+    print("getting recs") 
     return top_recipes
     
 
 def getRecipeRecommendations(N, input_ingredients):
-
+    print("getting recipe recs")
     return getRecommendations(N, getScores(input_ingredients))
 
 
