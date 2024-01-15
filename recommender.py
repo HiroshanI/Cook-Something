@@ -14,14 +14,13 @@ def getScores(input_ingredients):
         docs_vec = pickle.load(f)        
 
     cos_sim_scores = map(lambda doc: cosine_similarity(input_encoded, doc)[0][0], docs_vec)
-    print("getting scores") 
     return list(cos_sim_scores)
 
 
 def getRecommendations(N, scores):
     
-    recipes = pd.read_csv("input/recipes_preprocessed.csv")
     print("getting recs") 
+    recipes = pd.read_csv("./input/recipes_preprocessed.csv")
 
     top_recipes_idx = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:N]
     top_recipes_scores = sorted(scores, reverse=True)[:N]
@@ -33,8 +32,8 @@ def getRecommendations(N, scores):
     
 
 def getRecipeRecommendations(N, input_ingredients):
-    print("getting recipe recs")
-    return getRecommendations(N, getScores(input_ingredients))
+    scores = getScores(input_ingredients)
+    return getRecommendations(N, scores)
 
 
 # print(getRecipeRecommendations(5, ["ground beef, pasta, spaghetti, tomato pasta sauce, bacon, onion, zucchini, and, cheese"])[['recipe_name', 'scores']])
