@@ -19,11 +19,11 @@ def hello():
 def recommend_recipe():
     ingredients = request.args.get('ingredients')
 
-    return jsonify({"Ingredients":ingredients})
-    # recipes = getRecipeRecommendations(5, [ingredients])
-    # print(recipes)
+    return getRecipeRecommendations(5, [ingredients])
+    
+
     # response = {}
-    # for index, row in recipes.iterrows():
+    # for index, row in recipes_df.iterrows():
     #     response[index] = {
     #                         'recipe': str(row['recipe_name']),
     #                         'score': str(row['scores']),
