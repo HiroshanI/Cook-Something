@@ -19,10 +19,8 @@ def getScores(input_ingredients):
 
 def getRecipeRecommendations(N, input_ingredients):
     scores = getScores(input_ingredients)
-    print("getting recs") 
 
     recipes = pd.read_csv("./input/recipes_preprocessed.csv")
-    print(recipes) 
 
     top_recipes_idx = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:N]
     top_recipes_scores = sorted(scores, reverse=True)[:N]
@@ -30,8 +28,5 @@ def getRecipeRecommendations(N, input_ingredients):
     top_recipes = recipes.loc[top_recipes_idx, :]
     top_recipes['scores'] = top_recipes_scores
 
-    print(top_recipes)  
-    return top_recipes
+    return top_recipes.reset_index(drop=True)
 
-
-# print(getRecipeRecommendations(5, ["ground beef, pasta, spaghetti, tomato pasta sauce, bacon, onion, zucchini, and, cheese"])[['recipe_name', 'scores']])
