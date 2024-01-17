@@ -19,7 +19,7 @@ def hello():
 def recommend_recipe():
     ingredients = request.args.get('ingredients')
 
-    recipes_df = getRecipeRecommendations(5, [ingredients])
+    recipes_df = getRecipeRecommendations(20, [ingredients])
 
     response = {}
     for index, row in recipes_df.iterrows():
