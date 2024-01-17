@@ -8,6 +8,7 @@ def getIngredients():
     return pd.read_csv("src/ingredients_unique.csv")
 
 def getRecommendations(ingredients):
+    # return requests.get("https://coook-something-recipe-recommender.onrender.com/recipe?ingredients="+ingredients).json()
     return requests.get("http://127.0.0.1:5000/recipe?ingredients="+ingredients).json()
 
 # Set the page title and favicon
@@ -36,6 +37,7 @@ ingredients = st.multiselect("Select your ingredients", options=suggestions, key
 
 # Add a submit button
 if st.button("Submit", key='recommend'):
+    c1, c2 = st.columns(2)
     # Display the input text
     ingredients=' '.join(ingredients)
     print(ingredients)
@@ -43,10 +45,10 @@ if st.button("Submit", key='recommend'):
     top_recipes = getRecommendations(ingredients)
     
     for i in range(1):
-        st.markdown("## **" + top_recipes[str(i)]['recipe'] + "**")
+        c1.markdown("## **" + top_recipes[str(i)]['recipe'] + "**")
 
         for ingredient in ast.literal_eval(top_recipes[str(i)]['ingredients']):
-            st.markdown('- '+ingredient)
+            c1.markdown('- '+ingredient)
         
-        st.markdown('**URL**: ' + top_recipes[str(i)]['url'])
+        .markdown('**URL**: ' + top_recipes[str(i)]['url'])
 
