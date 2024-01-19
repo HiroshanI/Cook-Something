@@ -15,7 +15,7 @@ def get_suggestions():
 def recommendations_page(ingredients):
     
     with st.spinner("Give me a sec, I'm finding your recipes ..."):
-        recipes = requests.get("http://127.0.0.1:5000/recipe?ingredients="+ingredients)
+        recipes = requests.get("https://cook-something.onrender.com/recipe?ingredients="+ingredients)
     
     if recipes.status_code >= 500:
         st.toast("Couldn't fetch your recipes ... not your fault 😭")
